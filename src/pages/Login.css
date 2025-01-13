@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.nav-link.active-link {
+  color: #007bff !important;
+  font-weight: bold;
+}
+.card {
+  border-radius: 10px;
+}
+p a {
+  color: #007bff;
+}
+p a:hover {
+  text-decoration: underline;
+}
+.signIn-card {
+  width: "100%";
+  max-width: "400px";
+  border-radius: "8px";
+}

@@ -1,0 +1,68 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px; /* Hidden by default */
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  padding-top: 20px; /* Space at the top */
+  transition: all 0.3s ease; /* Smooth transition for sidebar opening */
+  z-index: 1040; /* Ensure the sidebar appears above the content but below the navbar */
+}
+
+/* Ensure the sidebar opens above the header */
+.sidebar.open {
+  left: 0; /* When sidebar is open */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.sidebar li {
+  padding: 10px 16px;
+  text-align: left;
+  width: 100%; /* Make items take full width */
+  cursor: pointer;
+}
+
+.sidebar li:hover {
+  background-color: #575757;
+}
+
+.sidebar li a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Make the sidebar scrollable if the list is long */
+.sidebar ul {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Make sidebar responsive */
+/* @media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+  }
+} */
+
+/* Overlay behind the sidebar */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1030; /* Overlay should be below the navbar and above the page content */
+  display: block;
+}

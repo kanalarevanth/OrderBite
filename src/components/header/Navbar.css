@@ -1,0 +1,43 @@
+.navbar-toggler {
+  display: block !important;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+.navbar-toggler {
+  border: none;
+  background: transparent;
+  z-index: 1060;
+}
+.navbar-toggler-icon {
+  background-color: black;
+  display: block;
+  width: 30px;
+  height: 3px;
+  transition: transform 0.3s ease;
+}
+.navbar-toggler-icon.close-icon {
+  transform: rotate(180deg);
+}
+.navbar-nav {
+  transition: margin-left 0.3s ease;
+}
+.navbar-nav .nav-link.active-link {
+  font-weight: bold;
+}
+.navbar-collapse {
+  display: flex;
+  justify-content: flex-end;
+}
+.navbar-nav .nav-item {
+  padding-left: 15px;
+}
+.nav-link.active-link {
+  font-weight: bold;
+}
