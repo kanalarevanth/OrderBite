@@ -23,8 +23,8 @@ const Login: React.FC = () => {
   }, [user, navigate]);
 
   return (
-    <div className="container">
-      <div className="card p-4 shadow-lg signIn-card">
+    <div className="container login-container-card">
+      <div className="p-4 shadow-lg signIn-card">
         <h2 className="text-center mb-4">Sign In</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group mb-3">
