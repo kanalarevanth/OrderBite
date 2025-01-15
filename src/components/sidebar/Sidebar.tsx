@@ -9,7 +9,6 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const menuItems = [
     "Pizza",
-    "Stir-fry",
     "Cookies",
     "Dessert",
     "Pasta",
@@ -17,25 +16,32 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     "Salad",
     "Biryani",
   ];
+
   return (
     <>
-      <div
-        className={`sidebar ${isOpen ? "open" : ""}`}
-        onClick={toggleSidebar}
-      >
+      <div className={`sidebar ${isOpen ? "open" : ""}`} aria-hidden={!isOpen}>
         <div className="sidebar-header">
-          {/* <img src="logo.png" alt="Logo" /> */}
-          <h2>Menu Items</h2>
+          <h2 className="menu-text">Menu Items</h2>
+          <button className="close-btn" onClick={toggleSidebar}>
+            X
+          </button>
         </div>
+
         <ul>
           {menuItems.map((item, index) => (
-            <li key={index}>{item}</li>
+            <li key={index} onClick={toggleSidebar}>
+              {item}
+            </li>
           ))}
         </ul>
       </div>
 
       {isOpen && (
-        <div className="sidebar-overlay" onClick={toggleSidebar}></div>
+        <div
+          className="sidebar-overlay"
+          onClick={toggleSidebar}
+          aria-hidden="true"
+        />
       )}
     </>
   );

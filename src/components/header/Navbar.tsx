@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "./Navbar.css";
 import Sidebar from "../sidebar/Sidebar";
+import "./Navbar.css";
 
 const Navbar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsSidebarOpen((prevState) => !prevState);
   };
+
   return (
     <>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
@@ -17,16 +18,13 @@ const Navbar: React.FC = () => {
           <button
             className="navbar-toggler"
             type="button"
+            aria-label="Toggle navigation"
             onClick={toggleSidebar}
           >
-            <span
-              className={`navbar-toggler-icon ${
-                isSidebarOpen ? "close-icon" : ""
-              }`}
-            ></span>
+            <span className="navbar-toggler-icon" />
           </button>
 
-          <NavLink className="navbar-brand" to="/">
+          <NavLink className="navbar-brand ms-3" to="/">
             Recipes
           </NavLink>
 
