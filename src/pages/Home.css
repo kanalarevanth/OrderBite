@@ -4,32 +4,13 @@
   min-height: 100vh;
   padding-top: 80px;
 }
-.skeleton-card,
-.recipe-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-radius: 8px;
-  overflow: hidden;
-}
-.skeleton-card .card-body,
-.recipe-card .card-body {
-  padding: 1rem;
-  text-align: center;
-}
-.skeleton-card .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-button {
-  border-radius: 8px;
-  padding: 10px 20px;
+
+.skelton-row {
+  gap: 20px;
+  /* width: 100%;
+  max-width: 100%; */
 }
 
-button:focus {
-  outline: none;
-}
 @media (max-width: 767px) {
   .recipes-container {
     padding-top: 60px;

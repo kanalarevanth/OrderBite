@@ -53,7 +53,6 @@ const Home: React.FC = () => {
   }, [page]);
 
   useEffect(() => {
-    // Infinite scroll logic
     const handleScroll = () => {
       const bottom =
         window.innerHeight + document.documentElement.scrollTop ===
@@ -74,13 +73,13 @@ const Home: React.FC = () => {
   return (
     <Container className="d-flex flex-column align-items-center recipes-container">
       {loading ? (
-        <Row xl={5}>
+        <Row xs={1} sm={2} md={3} lg={4} xl={6} className="skelton-row">
           {[...Array(6)].map((_, index) => (
-            <RecipeSkeleton key={index} />
+            <RecipeSkeleton key={`${index}`} />
           ))}
         </Row>
       ) : (
-        <Row xl={5}>
+        <Row xs={1} sm={2} md={3} lg={4} xl={6}>
           {recipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}

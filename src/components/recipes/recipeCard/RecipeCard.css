@@ -1,27 +1,77 @@
+.recipe-card-wrapper {
+  margin-bottom: 30px;
+}
+
 .recipe-card {
-  height: 100%;
+  height: 350px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: 8px;
+  overflow: hidden;
 }
+
 .card-img-top {
   height: 200px;
   object-fit: cover;
 }
-.card-text.small {
+
+.card-body {
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-text {
   font-size: 0.875rem;
   color: #6c757d;
+  margin-bottom: 10px;
 }
-.quantity-container {
+
+.bottom-content {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
   display: flex;
   align-items: center;
+  gap: 5px;
 }
+
+.card-text small {
+  margin-bottom: 10px;
+}
+
+.quantity-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  padding: 5px;
+  width: 90px;
+  height: 35px;
+}
+
 button {
-  width: 40px;
-  height: 40px;
-  font-size: 1.5rem;
+  width: 25px;
+  height: 25px;
+  font-size: 1.25rem;
   padding: 0;
-  border-radius: 5px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid #007bff;
 }
 
 button:hover,
@@ -30,14 +80,9 @@ button:focus {
   color: white;
   border-color: #007bff;
 }
+
 .quantity-display {
-  font-size: 1.25rem;
-  margin: 0 10px;
+  font-size: 1rem;
   font-weight: bold;
-}
-.card-body .d-flex {
-  gap: 10px;
-}
-.card-body .d-flex.flex-column {
-  gap: 15px;
+  color: grey;
 }

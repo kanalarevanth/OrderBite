@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./RecipeCard.css";
 
 interface Recipe {
   id: number;
@@ -37,19 +38,18 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   };
 
   return (
-    <div className="col-md-4 col-sm-6 mb-4">
-      <div className="card recipe-card shadow-sm">
+    <div className="recipe-card-wrapper">
+      <div className="recipe-card shadow-sm">
         <img src={recipe.image} className="card-img-top" alt={recipe.name} />
-        <div className="card-body d-flex flex-column justify-content-between">
-          <h6 className="card-title text-left">{recipe.name}</h6>
+        <div className="card-body">
+          <h6 className="card-title">{recipe.name}</h6>
           <p className="card-text small">
-            <strong>Cuisine:</strong> {recipe.cuisine} <br />
+            <strong>Cuisine:</strong> {recipe.cuisine}
           </p>
-
-          <div className="d-flex flex-column justify-content-center align-items-center mt-auto">
-            <div className="quantity-container d-flex align-items-center">
+          <div className="bottom-content">
+            <div className="quantity-container">
               <button
-                className="btn btn-outline-primary mx-2"
+                className="btn btn-outline-primary d-flex"
                 onClick={handleDecrease}
                 disabled={quantity === 0}
               >
@@ -57,7 +57,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
               </button>
               <span className="quantity-display">{quantity}</span>
               <button
-                className="btn btn-outline-primary mx-2"
+                className="btn btn-outline-primary d-flex"
                 onClick={handleIncrease}
               >
                 +
