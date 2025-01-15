@@ -14,6 +14,7 @@ interface User {
 
 interface AuthContextType {
   user: User;
+  setUser: (user: User) => void;
   logOut: () => void;
 }
 
@@ -35,12 +36,11 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const currentUserData = localStorage.getItem("user");
     if (currentUserData) {
       setUser(JSON.parse(currentUserData));
-      console.log("User logged in:", currentUserData);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ logOut, user }}>
+    <AuthContext.Provider value={{ logOut, user, setUser }}>
       {children}
     </AuthContext.Provider>
   );

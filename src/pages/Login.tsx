@@ -4,7 +4,7 @@ import "./Login.css";
 import { useAuth } from "../context/AuthContext";
 
 const Login: React.FC = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
@@ -12,7 +12,9 @@ const Login: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem("user", JSON.stringify({ email }));
+    const loggedInUser = { email };
+    localStorage.setItem("user", JSON.stringify(loggedInUser));
+    setUser(loggedInUser);
     navigate("/");
   };
 
