@@ -1,18 +1,14 @@
-.recipes-container {
+.home-recipes-container {
   width: 100%;
   max-width: 100%;
   min-height: 100vh;
   padding-top: 80px;
 }
-
-.skelton-row {
+.home-skelton-row {
   gap: 20px;
-  /* width: 100%;
-  max-width: 100%; */
 }
-
 @media (max-width: 767px) {
-  .recipes-container {
+  .home-recipes-container {
     padding-top: 60px;
   }
 }

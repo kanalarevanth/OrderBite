@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Recipe } from "../types/recipe";
+import { RootState } from "./store";
 
 interface CartState {
   items: Recipe[];
@@ -8,6 +9,11 @@ interface CartState {
 const initialState: CartState = {
   items: [],
 };
+
+interface UpdateRecipeQuantityPayload {
+  id: number;
+  quantity: number;
+}
 
 const cartSlice = createSlice({
   name: "cart",
@@ -18,14 +24,17 @@ const cartSlice = createSlice({
         (item) => item.id === action.payload.id
       );
       if (existingRecipe) {
-        existingRecipe.quantity = action.payload.quantity;
+        existingRecipe.quantity = action.payload.quantity ?? 1;
       } else {
-        state.items.push(action.payload);
+        state.items.push({
+          ...action.payload,
+          quantity: action.payload.quantity || 1,
+        });
       }
     },
     updateRecipeQuantity(
       state,
-      action: PayloadAction<{ id: number; quantity: number }>
+      action: PayloadAction<UpdateRecipeQuantityPayload>
     ) {
       const recipe = state.items.find((item) => item.id === action.payload.id);
       if (recipe) {
@@ -43,10 +52,12 @@ const cartSlice = createSlice({
   },
 });
 
-export const selectCartCount = (state: { cart: CartState }) => {
-  return state.cart.items.reduce((total, item) => total + item.quantity, 0);
+export const selectCartCount = (state: RootState): number => {
+  return state.cart.items.reduce(
+    (total, item) => total + (item.quantity || 0),
+    0
+  );
 };
 
 export const { addRecipe, updateRecipeQuantity, clearCart } = cartSlice.actions;
-
 export default cartSlice.reducer;

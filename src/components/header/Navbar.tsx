@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Sidebar from "../sidebar/Sidebar";
-import "./Navbar.css";
 import { useAuth } from "../../context/AuthContext";
 import { useSelector } from "react-redux";
 import { selectCartCount } from "../../store/cartSlice";
+import "./Navbar.css";
 
 const Navbar: React.FC = () => {
   const { user, logOut } = useAuth();
@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <nav className="custom-navbar navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container-fluid">
           <button
             className="navbar-toggler"
@@ -29,7 +29,6 @@ const Navbar: React.FC = () => {
           >
             <span className="navbar-toggler-icon" />
           </button>
-
           <NavLink className="navbar-brand" to="/">
             Recipes
           </NavLink>
