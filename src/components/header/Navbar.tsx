@@ -33,17 +33,11 @@ const Navbar: React.FC = () => {
             <div className="d-flex align-items-center">
               <h6 className="mb-0">{user.email}</h6>
               <button
-                className="btn btn-link ms-2 text-dark"
+                className="btn btn-link ms-2 text-dark logout-btn"
                 onClick={logOut}
                 aria-label="Logout"
               >
-                {/* Material Icons logout icon */}
-                <i
-                  className="material-icons-round"
-                  style={{ fontSize: "20px" }}
-                >
-                  logout
-                </i>
+                <i className="material-icons-round">logout</i>
               </button>
             </div>
           ) : (

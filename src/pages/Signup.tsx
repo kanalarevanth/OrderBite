@@ -1,5 +1,57 @@
-const Signup = () => {
-  return <div>Sign up</div>;
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+
+const Signup: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
+  return (
+    <div className="container login-container-card">
+      <div className="p-4 shadow-lg signIn-card">
+        <h2 className="text-center mb-4">Create an account</h2>
+        <form onSubmit={handleLogin}>
+          <div className="form-group mb-3">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Enter your email"
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Enter your password"
+            />
+          </div>
+          <button
+            type="submit"
+            className="btn btn-primary btn-block mt-3"
+            disabled={!email || !password}
+          >
+            Login
+          </button>
+        </form>
+        <p className="mt-3 text-center">
+          Already have an account? <NavLink to="/login">Login</NavLink>
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default Signup;

@@ -86,4 +86,10 @@
 }
 .material-icons-round {
   color: #333;
+  font-size: 20px;
+}
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
