@@ -1,42 +1,19 @@
-import React, { useState } from "react";
 import "./RecipeCard.css";
-
-interface Recipe {
-  id: number;
-  name: string;
-  ingredients: string[];
-  instructions: string[];
-  prepTimeMinutes: number;
-  cookTimeMinutes: number;
-  servings: number;
-  difficulty: string;
-  cuisine: string;
-  caloriesPerServing: number;
-  tags: string[];
-  userId: number;
-  image: string;
-  rating: number;
-  reviewCount: number;
-  mealType: string[];
-}
+import { Recipe } from "../../../types/recipe";
 
 interface RecipeCardProps {
   recipe: Recipe;
+  recipeIndex: number;
+  handleIncrease: (id: number, recipeIndex: number) => void;
+  handleDecrease: (id: number, recipeIndex: number) => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
-  const [quantity, setQuantity] = useState<number>(0);
-
-  const handleIncrease = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const handleDecrease = () => {
-    if (quantity > 0) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
-
+const RecipeCard: React.FC<RecipeCardProps> = ({
+  recipe,
+  recipeIndex,
+  handleIncrease,
+  handleDecrease,
+}) => {
   return (
     <div className="recipe-card-wrapper">
       <div className="recipe-card shadow-sm">
@@ -50,15 +27,15 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             <div className="quantity-container">
               <button
                 className="btn btn-outline-primary d-flex"
-                onClick={handleDecrease}
-                disabled={quantity === 0}
+                onClick={() => handleDecrease(recipe.id, recipeIndex)}
+                disabled={!recipe?.quantity}
               >
                 -
               </button>
-              <span className="quantity-display">{quantity}</span>
+              <span className="quantity-display">{recipe?.quantity || 0}</span>
               <button
                 className="btn btn-outline-primary d-flex"
-                onClick={handleIncrease}
+                onClick={() => handleIncrease(recipe.id, recipeIndex)}
               >
                 +
               </button>
