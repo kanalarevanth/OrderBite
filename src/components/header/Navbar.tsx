@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <nav className="custom-navbar navbar navbar-expand-lg navbar-light fixed-top">
+      <nav className="custom-navbar navbar navbar-expand-lg navbar-light">
         <div className="container-fluid">
           <button
             className="navbar-toggler"
