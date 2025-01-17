@@ -9,11 +9,16 @@ import "./Navbar.css";
 const Navbar: React.FC = () => {
   const { user, logOut } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const cartCount = useSelector(selectCartCount);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   return (
@@ -34,7 +39,19 @@ const Navbar: React.FC = () => {
           </NavLink>
 
           <div className="ms-auto d-flex align-items-center">
-            <div className="cart-container">
+            <div className="search-container d-flex align-items-center ms-3">
+              <span className="search-icon">
+                <i className="material-icons-round">search</i>
+              </span>
+              <input
+                type="text"
+                className="search-input"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                placeholder="Search Recipes"
+              />
+            </div>
+            <div className="cart-container ms-3">
               <NavLink to="/cart" className="cart-icon" aria-label="Cart">
                 <i className="material-icons-round">shopping_cart</i>
                 {cartCount > 0 && (
@@ -42,7 +59,6 @@ const Navbar: React.FC = () => {
                 )}
               </NavLink>
             </div>
-
             {user?.email ? (
               <div className="d-flex align-items-center ms-3">
                 <h6 className="mb-0">{user.email}</h6>
