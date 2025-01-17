@@ -16,3 +16,20 @@ export const getRecipes = async (skip: number, limit: number) => {
     return null;
   }
 };
+
+export const getSearchRecipes = async (searchValue: string) => {
+  try {
+    const response = await fetch(
+      `${VITE_API_URL}/recipes/search?q=${searchValue}`
+    );
+    const data = await response.json();
+
+    if (data) {
+      return data;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+    return null;
+  }
+};
