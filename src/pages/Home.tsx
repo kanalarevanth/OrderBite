@@ -6,6 +6,7 @@ import "./Home.css";
 import { useSelector } from "react-redux";
 import { Recipe } from "../types/recipe";
 import { RootState } from "../store/store";
+import { getRecipes } from "../utils/recipes";
 
 const Home: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -20,14 +21,13 @@ const Home: React.FC = () => {
     const fetchRecipes = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          `https://dummyjson.com/recipes?skip=${
-            (page - 1) * itemsPerPage
-          }&limit=${itemsPerPage}`
-        );
-        const data = await response.json();
-        setRecipes((prevRecipes) => [...prevRecipes, ...data.recipes]);
-        setHasMore(data.total > recipes.length + itemsPerPage);
+        const skip = (page - 1) * itemsPerPage;
+        const limit = itemsPerPage;
+        const data = await getRecipes(skip, limit);
+        if (data) {
+          setRecipes((prevRecipes) => [...prevRecipes, ...data.recipes]);
+          setHasMore(data.total > recipes.length + itemsPerPage);
+        }
       } catch (error) {
         console.error("Error fetching recipes:", error);
       } finally {
