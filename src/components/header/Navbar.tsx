@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Sidebar from "../sidebar/Sidebar";
 import { useAuth } from "../../context/AuthContext";
 import { useSelector } from "react-redux";
@@ -13,14 +13,21 @@ const Navbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const cartCount = useSelector(selectCartCount);
+  const navigate = useNavigate();
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Track the debounce timeout
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
+  };
+
+  const handleSearchClick = (result: any) => {
+    setSearchResults([]);
+    setSearchTerm("");
+    navigate(`/recipe/${result.id}`);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +107,11 @@ const Navbar: React.FC = () => {
               {searchTerm && searchResults.length > 0 && (
                 <div className="search-results">
                   {searchResults.map((result, index) => (
-                    <div key={index} className="search-result-item">
+                    <div
+                      key={index}
+                      className="search-result-item"
+                      onClick={() => handleSearchClick(result)}
+                    >
                       <img
                         src={result?.image}
                         className="search-result-img"
