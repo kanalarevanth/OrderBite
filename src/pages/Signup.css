@@ -1,8 +1,9 @@
-.login-container-card {
+.signup-container-card {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  padding-top: 60px;
   padding: 0;
   box-sizing: border-box;
 }
@@ -40,4 +41,22 @@ p a:hover {
   max-width: 400px;
   border-radius: 8px;
   background-color: white;
+}
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+.form-group {
+  width: 100%;
+}
+.form-group.col-md-6 {
+  flex: 1;
+}
+@media (max-width: 767px) {
+  .form-row {
+    flex-direction: column;
+  }
+  .form-group.col-md-6 {
+    width: 100%;
+  }
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addRecipe, updateRecipeQuantity } from "../store/cartSlice";
-import { Recipe } from "../types/recipe";
+import { Recipe } from "../types/type";
 import { RootState } from "../store/store";
 import "./RecipeDetails.css";
 

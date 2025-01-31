@@ -5,17 +5,14 @@ import {
   useState,
   ReactNode,
 } from "react";
-
-interface User {
-  id?: string;
-  username?: string;
-  email?: string;
-}
+import { localKeys } from "../utils/local-storage";
+import { User } from "../types/type";
 
 interface AuthContextType {
   user: User;
   setUser: (user: User) => void;
-  logOut: () => void;
+  setToken: (token: string) => void;
+  token: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,21 +23,21 @@ interface AuthContextProviderProps {
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<User>({});
-
-  const logOut = () => {
-    localStorage.removeItem("user");
-    setUser({});
-  };
+  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
-    const currentUserData = localStorage.getItem("user");
+    const currentUserData = localStorage.getItem(localKeys.user);
     if (currentUserData) {
       setUser(JSON.parse(currentUserData));
+    }
+    const tokenData = localStorage.getItem(localKeys.token);
+    if (tokenData) {
+      setToken(tokenData);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ logOut, user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );

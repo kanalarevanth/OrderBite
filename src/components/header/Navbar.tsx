@@ -6,9 +6,10 @@ import { useSelector } from "react-redux";
 import { selectCartCount } from "../../store/cartSlice";
 import "./Navbar.css";
 import { getSearchRecipes } from "../../utils/recipes";
+import { logoutUser } from "../../utils/login";
 
 const Navbar: React.FC = () => {
-  const { user, logOut } = useAuth();
+  const { user, setUser, setToken } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
@@ -28,6 +29,18 @@ const Navbar: React.FC = () => {
     setSearchResults([]);
     setSearchTerm("");
     navigate(`/recipe/${result.id}`);
+  };
+
+  const logOut = async () => {
+    try {
+      const res = await logoutUser();
+      if (res) {
+        setUser({});
+        setToken("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,7 +148,7 @@ const Navbar: React.FC = () => {
             </div>
             {user?.email ? (
               <div className="d-flex align-items-center ms-3">
-                <h6 className="mb-0">{user.email}</h6>
+                <h6 className="mb-0">{user.firstName}</h6>
                 <button
                   className="btn btn-link ms-2 text-dark logout-btn"
                   onClick={logOut}

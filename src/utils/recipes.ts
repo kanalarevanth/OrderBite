@@ -1,9 +1,9 @@
-const { VITE_API_URL } = import.meta.env;
+const { VITE_DUMMY_API_URL } = import.meta.env;
 
 export const getRecipes = async (skip: number, limit: number) => {
   try {
     const response = await fetch(
-      `${VITE_API_URL}/recipes?skip=${skip}&limit=${limit}`
+      `${VITE_DUMMY_API_URL}/recipes?skip=${skip}&limit=${limit}`
     );
     const data = await response.json();
 
@@ -20,7 +20,7 @@ export const getRecipes = async (skip: number, limit: number) => {
 export const getSearchRecipes = async (searchValue: string) => {
   try {
     const response = await fetch(
-      `${VITE_API_URL}/recipes/search?q=${searchValue}`
+      `${VITE_DUMMY_API_URL}/recipes/search?q=${searchValue}`
     );
     const data = await response.json();
 

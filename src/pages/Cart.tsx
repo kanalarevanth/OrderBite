@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateRecipeQuantity } from "../store/cartSlice";
-import { Recipe } from "../types/recipe";
+import { Recipe } from "../types/type";
 import "./Cart.css";
 import { RootState } from "../store/store";
 

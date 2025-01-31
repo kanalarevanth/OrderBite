@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { addRecipe, updateRecipeQuantity } from "../../../store/cartSlice";
-import { Recipe } from "../../../types/recipe";
+import { Recipe } from "../../../types/type";
 import { useNavigate } from "react-router-dom";
 import "./RecipeCard.css";
 

@@ -4,7 +4,7 @@ import RecipeCard from "../components/recipes/recipeCard/RecipeCard";
 import RecipeSkeleton from "../components/recipes/recipeSkeleton/RecipeSkeleton";
 import "./Home.css";
 import { useSelector } from "react-redux";
-import { Recipe } from "../types/recipe";
+import { Recipe } from "../types/type";
 import { RootState } from "../store/store";
 import { getRecipes } from "../utils/recipes";
 
