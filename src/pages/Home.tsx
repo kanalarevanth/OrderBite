@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
-  const [itemsPerPage] = useState<number>(6);
+  const [itemsPerPage] = useState<number>(10);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const location = useLocation();
@@ -23,6 +23,8 @@ const Home: React.FC = () => {
   const tag = queryParams.get("tag");
 
   useEffect(() => {
+    let isIgnore = false;
+
     const fetchRecipes = async () => {
       setLoading(true);
       try {
@@ -38,8 +40,10 @@ const Home: React.FC = () => {
         }
 
         if (data) {
-          setRecipes((prevRecipes) => [...prevRecipes, ...data.recipes]);
-          setHasMore(data.total > recipes.length + itemsPerPage);
+          if (!isIgnore) {
+            setRecipes((prevRecipes) => [...prevRecipes, ...data.recipes]);
+            setHasMore(data.total > recipes.length + itemsPerPage);
+          }
         }
       } catch (error) {
         console.error("Error fetching recipes:", error);
@@ -49,6 +53,10 @@ const Home: React.FC = () => {
     };
 
     fetchRecipes();
+
+    return () => {
+      isIgnore = true;
+    };
   }, [page, tag]);
 
   const updatedRecipes = useMemo(() => {
