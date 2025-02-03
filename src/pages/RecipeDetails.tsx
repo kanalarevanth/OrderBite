@@ -128,8 +128,8 @@ const RecipeDetails: React.FC = () => {
           )}
         </div>
 
-        <div className="ratings-container">
-          <span className="rating-text">Ratings:</span>
+        <div className="recipe-details-ratings-container">
+          <span className="recipe-details-rating-text">Ratings:</span>
           {renderStars(recipe.rating)}
         </div>
       </div>

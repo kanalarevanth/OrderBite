@@ -6,7 +6,8 @@ import "./Home.css";
 import { useSelector } from "react-redux";
 import { Recipe } from "../types/type";
 import { RootState } from "../store/store";
-import { getRecipes } from "../utils/recipes";
+import { useLocation } from "react-router-dom";
+import { getRecipes, getTagRecipes } from "../utils/recipes";
 
 const Home: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -16,6 +17,10 @@ const Home: React.FC = () => {
   const [itemsPerPage] = useState<number>(6);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const tag = queryParams.get("tag");
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -23,7 +28,15 @@ const Home: React.FC = () => {
       try {
         const skip = (page - 1) * itemsPerPage;
         const limit = itemsPerPage;
-        const data = await getRecipes(skip, limit);
+        let data;
+
+        if (tag) {
+          setRecipes([]);
+          data = await getTagRecipes(tag, skip, limit);
+        } else {
+          data = await getRecipes(skip, limit);
+        }
+
         if (data) {
           setRecipes((prevRecipes) => [...prevRecipes, ...data.recipes]);
           setHasMore(data.total > recipes.length + itemsPerPage);
@@ -36,7 +49,7 @@ const Home: React.FC = () => {
     };
 
     fetchRecipes();
-  }, [page]);
+  }, [page, tag]);
 
   const updatedRecipes = useMemo(() => {
     return recipes.map((recipe) => {
@@ -72,7 +85,7 @@ const Home: React.FC = () => {
           ))}
         </Row>
       ) : (
-        <Row xs={1} sm={2} md={3} lg={4} xl={6}>
+        <Row xs={1} sm={2} md={3} lg={3} xl={5}>
           {updatedRecipes.map((recipe, index) => (
             <RecipeCard key={`${recipe.id}${index}`} recipe={recipe} />
           ))}

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 interface SidebarProps {
@@ -7,6 +8,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+  const navigate = useNavigate();
+
   const menuItems = [
     "Pizza",
     "Cookies",
@@ -16,6 +19,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     "Salad",
     "Biryani",
   ];
+
+  const handleMenuItemClick = (item: string) => {
+    toggleSidebar();
+    navigate(`/home?tag=${item.toLowerCase()}`);
+  };
 
   return (
     <>
@@ -29,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
         <ul>
           {menuItems.map((item, index) => (
-            <li key={index} onClick={toggleSidebar}>
+            <li key={index} onClick={() => handleMenuItemClick(item)}>
               {item}
             </li>
           ))}

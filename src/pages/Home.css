@@ -7,6 +7,11 @@
 .home-skelton-row {
   gap: 20px;
 }
+.home-recipes-container > .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 @media (max-width: 767px) {
   .home-recipes-container {
     padding-top: 60px;

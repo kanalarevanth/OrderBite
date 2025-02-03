@@ -79,6 +79,12 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             )}
           </div>
         </div>
+        <div className="recipe-card-rating">
+          <div className="rating-box">
+            <span className="material-icons-round rating-star">star</span>{" "}
+            <span className="rating-text">{recipe.rating}</span>
+          </div>
+        </div>
       </div>
     </div>
   );
