@@ -1,29 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addRecipe, updateRecipeQuantity } from "../store/cartSlice";
 import { Recipe } from "../types/type";
 import { RootState } from "../store/store";
+import { getRecipe, getMealTypeRecipes } from "../utils/recipes";
+import RecipeCard from "../components/recipes/recipeCard/RecipeCard";
 import "./RecipeDetails.css";
 
 const RecipeDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [relatedRecipes, setRelatedRecipes] = useState<Recipe[]>([]);
   const dispatch = useDispatch();
+  const scrollToTopRef = useRef<HTMLDivElement | null>(null);
 
   const cartRecipe = useSelector((state: RootState) =>
     state.cart.items.find((r) => r.id === Number(id))
   );
 
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+
   useEffect(() => {
+    let isIgnore = false;
+
     const fetchRecipe = async () => {
-      const response = await fetch(`https://dummyjson.com/recipes/${id}`);
-      const data = await response.json();
-      setRecipe(data);
+      const response = await getRecipe(id);
+      if (response && !isIgnore) {
+        setRecipe(response);
+      }
     };
 
     fetchRecipe();
+    return () => {
+      isIgnore = true;
+    };
   }, [id]);
+
+  useEffect(() => {
+    const fetchRelatedRecipes = async () => {
+      if (recipe) {
+        const tags = recipe.mealType;
+        const relatedRecipesPromises = tags.map((tag) =>
+          getMealTypeRecipes(tag)
+        );
+        const relatedResponses = await Promise.all(relatedRecipesPromises);
+        const allRelatedRecipes = relatedResponses.flatMap(
+          (response) => response.recipes
+        );
+        const uniqueRelatedRecipes = allRelatedRecipes
+          .filter(
+            (rec, index, self) =>
+              index === self.findIndex((r) => r.id === rec.id)
+          )
+          .filter((rec) => rec.id.toString() !== id?.toString());
+
+        setRelatedRecipes(uniqueRelatedRecipes);
+      }
+    };
+
+    fetchRelatedRecipes();
+  }, [recipe, id]);
+
+  const updatedRecipes = useMemo(() => {
+    return relatedRecipes.map((recipe) => {
+      const cartItem = cartItems.find((item) => item.id === recipe.id);
+      return { ...recipe, quantity: cartItem ? cartItem.quantity : 0 };
+    });
+  }, [relatedRecipes, cartItems]);
 
   const handleIncrease = () => {
     if (recipe) {
@@ -59,6 +103,12 @@ const RecipeDetails: React.FC = () => {
     }
   };
 
+  const handleRelatedRecipeClick = () => {
+    if (scrollToTopRef.current) {
+      scrollToTopRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const renderStars = (rating: number) => {
     const filledStars = Math.floor(rating);
     const halfStar = rating % 1 !== 0;
@@ -86,54 +136,72 @@ const RecipeDetails: React.FC = () => {
   }
 
   return (
-    <div className="recipe-details-box">
-      <div className="recipe-details-left">
-        <img
-          src={recipe.image}
-          alt={recipe.name}
-          className="recipe-details-img"
-        />
-      </div>
-
-      <div className="recipe-details-right">
-        <div className="recipe-info">
-          <h2 className="recipe-name">{recipe.name}</h2>
-          <p className="recipe-ingredients">
-            <strong>Ingredients:</strong> {recipe.ingredients.join(", ")}
-          </p>
-          <p className="recipe-cuisine">
-            <strong>Cuisine:</strong> {recipe.cuisine}
-          </p>
+    <>
+      <div className="recipe-details-box" ref={scrollToTopRef}>
+        <div className="recipe-details-left">
+          <img
+            src={recipe.image}
+            alt={recipe.name}
+            className="recipe-details-img"
+          />
         </div>
 
-        <div className="action-container">
-          {cartRecipe ? (
-            <div className="quantity-container">
+        <div className="recipe-details-right">
+          <div className="recipe-info">
+            <h2 className="recipe-name">{recipe.name}</h2>
+            <p className="recipe-ingredients">
+              <strong>Ingredients:</strong> {recipe.ingredients.join(", ")}
+            </p>
+            <p className="recipe-cuisine">
+              <strong>Cuisine:</strong> {recipe.cuisine}
+            </p>
+          </div>
+          <div className="recipe-details-ratings-container">
+            <span className="recipe-details-rating-text">Ratings:</span>
+            {renderStars(recipe.rating)}
+          </div>
+
+          <div className="recipe-card-bottom-content">
+            {cartRecipe ? (
+              <div className="recipe-card-quantity-container">
+                <button
+                  onClick={handleDecrease}
+                  disabled={!cartRecipe?.quantity || cartRecipe.quantity <= 0}
+                >
+                  -
+                </button>
+                <span className="recipe-card-quantity-display">
+                  {cartRecipe?.quantity || 0}
+                </span>
+                <button onClick={handleIncrease}>+</button>
+              </div>
+            ) : (
               <button
-                className="quantity-btn"
-                onClick={handleDecrease}
-                disabled={!cartRecipe?.quantity || cartRecipe.quantity <= 0}
+                className="recipe-card-btn-add-to-cart"
+                onClick={handleAddToCart}
               >
-                -
+                <i className="material-icons-round">shopping_cart</i> Add
               </button>
-              <span className="quantity">{cartRecipe?.quantity || 0}</span>
-              <button className="quantity-btn" onClick={handleIncrease}>
-                +
-              </button>
-            </div>
-          ) : (
-            <button className="add-to-cart-btn" onClick={handleAddToCart}>
-              Add <i className="material-icons-round">shopping_cart</i>
-            </button>
-          )}
-        </div>
-
-        <div className="recipe-details-ratings-container">
-          <span className="recipe-details-rating-text">Ratings:</span>
-          {renderStars(recipe.rating)}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <div className="related-recipes">
+        <h3>Related Recipes</h3>
+        <hr />
+        <div className="related-recipes-list">
+          {updatedRecipes.map((relatedRecipe) => (
+            <div
+              key={relatedRecipe.id}
+              onClick={() => handleRelatedRecipeClick()}
+            >
+              <RecipeCard recipe={relatedRecipe} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

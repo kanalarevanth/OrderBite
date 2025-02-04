@@ -1,20 +1,26 @@
 .recipe-details-box {
   display: flex;
   justify-content: space-between;
+  background-color: white;
+  border: 2px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top: 60px;
   border-radius: 10px;
-  width: 100%;
-  background-color: white;
-  border: 2px solid #ddd;
+  overflow: hidden;
+  padding: 20px;
+  margin-bottom: 20px;
+  max-height: 500px;
+  height: auto;
+  position: relative;
 }
 .recipe-details-left {
   flex: 1;
-  height: 100%;
+  position: relative;
 }
 .recipe-details-img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 300px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -25,9 +31,6 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-}
-.recipe-info {
-  margin-bottom: auto;
 }
 .recipe-name {
   font-size: 24px;
@@ -40,60 +43,10 @@
   color: #555;
   margin-bottom: 10px;
 }
-.action-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-.quantity-container {
-  display: flex;
-  align-items: center;
-  margin-top: auto;
-}
-.quantity-btn {
-  padding: 10px;
-  font-size: 18px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.quantity-btn:hover {
-  background-color: #0056b3;
-}
-.quantity {
-  font-size: 18px;
-  margin: 0 10px;
-}
-.add-to-cart-btn {
-  padding: 10px 20px;
-  font-size: 18px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-}
-.add-to-cart-btn:hover {
-  background-color: #0056b3;
-}
-.add-to-cart-btn i {
-  margin-left: 10px;
-}
 .recipe-details-ratings-container {
-  position: absolute;
-  bottom: 10px;
   display: flex;
   align-items: center;
-  margin-top: auto;
+  margin-top: 10px;
 }
 .recipe-details-rating-text {
   font-size: 18px;
@@ -108,35 +61,130 @@
   color: #ccc;
 }
 .star.half {
-  color: #f1c40f;
   background: linear-gradient(to right, #f39c12 50%, #ccc 50%);
   -webkit-background-clip: text;
   color: transparent;
+}
+.related-recipes {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+.related-recipes h3 {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 20px;
+}
+.related-recipes-list {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.related-recipes-list .recipe-card-container {
+  width: 100%;
+  max-width: 300px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.related-recipes-list .recipe-card-container img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.related-recipes-list .recipe-card-container .recipe-card-title {
+  font-size: 18px;
+  color: #333;
+  margin-top: 10px;
+}
+.recipe-details-btn-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+}
+.recipe-details-btn {
+  background-color: #ff5722;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.recipe-details-btn:hover {
+  background-color: #e64a19;
+}
+.recipe-details-btn i {
+  margin-left: 10px;
 }
 @media (max-width: 768px) {
   .recipe-details-box {
     flex-direction: column;
     align-items: center;
   }
+
   .recipe-details-left,
   .recipe-details-right {
     width: 100%;
-    height: auto;
   }
+
   .recipe-details-img {
-    height: 200px;
+    max-height: 300px;
   }
+
   .recipe-details-right {
     padding-left: 0;
     text-align: center;
   }
+
   .add-to-cart-btn {
     width: 100%;
     margin-top: 20px;
   }
-  .ratings-container {
+
+  .recipe-details-ratings-container {
     position: static;
     margin-top: 10px;
     justify-content: center;
+  }
+
+  .related-recipes {
+    margin-top: 20px;
+    padding: 15px;
+  }
+
+  .related-recipes-list {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .recipe-name {
+    font-size: 20px;
+  }
+
+  .recipe-ingredients,
+  .recipe-cuisine {
+    font-size: 14px;
+  }
+
+  .quantity-btn,
+  .add-to-cart-btn {
+    font-size: 16px;
+  }
+
+  .quantity-container {
+    margin-top: 10px;
+  }
+
+  .quantity {
+    font-size: 16px;
   }
 }
