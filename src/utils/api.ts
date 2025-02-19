@@ -1,5 +1,6 @@
 import { handleResHeaders } from "./headers";
 import { localKeys } from "../utils/local-storage";
+import { User } from "../types/type";
 
 type APIInput = {
   url?: string;
@@ -30,8 +31,8 @@ const handleRes = async (
   resolve: (value?: unknown) => void,
   reject: (reason?: any) => void
 ) => {
-  const contentType: any = res.headers.get("content-type");
   if (res.ok) {
+    const contentType = res.headers.get("content-type");
     if (contentType.indexOf(ContentTypes.json) >= 0) {
       resolve(await res.json());
     } else {
@@ -53,7 +54,7 @@ const handleRes = async (
 export const getData = ({ url, query = {} }: GetInput): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     const queryString = new URLSearchParams(query).toString();
-    const currentUserData: any = localStorage.getItem(localKeys.user);
+    const currentUserData = localStorage.getItem(localKeys.user);
     const tokenData = localStorage.getItem(localKeys.token);
     try {
       const res = await fetch(url + (queryString ? `?${queryString}` : ""), {
@@ -87,7 +88,7 @@ export const postData = ({
   query = {},
   multipart = false,
 }: PostInput): Promise<any> => {
-  let currentUserData: any = localStorage.getItem(localKeys.user);
+  let currentUserData: User = localStorage.getItem(localKeys.user);
   currentUserData = JSON.parse(currentUserData);
   const tokenData = localStorage.getItem(localKeys.token);
   return new Promise(async (resolve, reject) => {

@@ -17,7 +17,7 @@ export const addUser = async (data: unknown = {}) => {
       return false;
     }
     return false;
-  } catch (error: any) {
+  } catch (error) {
     if (error?.status === 409) {
       console.log("User Account already exists.");
       return { status: error?.status };

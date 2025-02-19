@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user?.length) {
       navigate("/");
     }
   }, [user, navigate]);

@@ -9,7 +9,7 @@ import RecipeCard from "../components/recipes/recipeCard/RecipeCard";
 import "./RecipeDetails.css";
 
 const RecipeDetails: React.FC = () => {
-  const { id } = useParams<{ id: any }>();
+  const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [relatedRecipes, setRelatedRecipes] = useState<Recipe[]>([]);
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const RecipeDetails: React.FC = () => {
     let isIgnore = false;
 
     const fetchRecipe = async () => {
-      const response = await getRecipe(id?.toString());
+      const response = await getRecipe(id);
       if (response && !isIgnore) {
         setRecipe(response);
       }
