@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
               />
               {searchTerm && searchResults.length > 0 && (
                 <div className="search-results">
-                  {searchResults.map((result, index) => (
+                  {searchResults.map((result: any, index) => (
                     <div
                       key={index}
                       className="search-result-item"
