@@ -31,8 +31,8 @@ const handleRes = async (
   resolve: (value?: unknown) => void,
   reject: (reason?: any) => void
 ) => {
+  const contentType = res.headers.get("content-type");
   if (res.ok) {
-    const contentType = res.headers.get("content-type");
     if (contentType.indexOf(ContentTypes.json) >= 0) {
       resolve(await res.json());
     } else {
