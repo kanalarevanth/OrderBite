@@ -2,18 +2,34 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useAuth } from "../context/AuthContext";
+import { loginUser } from "../utils/login";
 
 const Login: React.FC = () => {
-  const { user } = useAuth();
+  const { user, setUser, setToken } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [userData, seetUserData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem("user", JSON.stringify({ email }));
-    navigate("/");
+    try {
+      const res = await loginUser(userData);
+      if (res.status === 404) {
+        setError("User Not Found. Please Check Credentials and Try Again");
+      } else if (res.status === 401) {
+        setError("Pasword Incorrect");
+      } else if (res) {
+        setUser(res.user);
+        setToken(res.token);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -23,8 +39,8 @@ const Login: React.FC = () => {
   }, [user, navigate]);
 
   return (
-    <div className="container">
-      <div className="card p-4 shadow-lg signIn-card">
+    <div className="container login-container-card">
+      <div className="p-4 shadow-lg signIn-card">
         <h2 className="text-center mb-4">Sign In</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group mb-3">
@@ -33,8 +49,10 @@ const Login: React.FC = () => {
               type="email"
               id="email"
               className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userData.email}
+              onChange={(e) =>
+                seetUserData({ ...userData, email: e.target.value })
+              }
               required
               placeholder="Enter your email"
             />
@@ -45,8 +63,10 @@ const Login: React.FC = () => {
               type="password"
               id="password"
               className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={userData.password}
+              onChange={(e) =>
+                seetUserData({ ...userData, password: e.target.value })
+              }
               required
               placeholder="Enter your password"
             />
@@ -54,11 +74,12 @@ const Login: React.FC = () => {
           <button
             type="submit"
             className="btn btn-primary btn-block mt-3"
-            disabled={!email || !password}
+            disabled={!userData.email || !userData.password}
           >
             Login
           </button>
         </form>
+        {error && <div className="text-danger mt-3 text-center">{error}</div>}
         <p className="mt-3 text-center">
           Don't have an account? <NavLink to="/signup">Sign Up</NavLink>
         </p>

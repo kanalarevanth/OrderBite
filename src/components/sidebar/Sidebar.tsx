@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 interface SidebarProps {
@@ -7,9 +8,10 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+  const navigate = useNavigate();
+
   const menuItems = [
     "Pizza",
-    "Stir-fry",
     "Cookies",
     "Dessert",
     "Pasta",
@@ -17,25 +19,37 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     "Salad",
     "Biryani",
   ];
+
+  const handleMenuItemClick = (item: string) => {
+    toggleSidebar();
+    navigate(`/home?tag=${item.toLowerCase()}`);
+  };
+
   return (
     <>
-      <div
-        className={`sidebar ${isOpen ? "open" : ""}`}
-        onClick={toggleSidebar}
-      >
+      <div className={`sidebar ${isOpen ? "open" : ""}`} aria-hidden={!isOpen}>
         <div className="sidebar-header">
-          {/* <img src="logo.png" alt="Logo" /> */}
-          <h2>Menu Items</h2>
+          <h2 className="menu-text">Menu Items</h2>
+          <button className="close-btn" onClick={toggleSidebar}>
+            X
+          </button>
         </div>
+
         <ul>
           {menuItems.map((item, index) => (
-            <li key={index}>{item}</li>
+            <li key={index} onClick={() => handleMenuItemClick(item)}>
+              {item}
+            </li>
           ))}
         </ul>
       </div>
 
       {isOpen && (
-        <div className="sidebar-overlay" onClick={toggleSidebar}></div>
+        <div
+          className="sidebar-overlay"
+          onClick={toggleSidebar}
+          aria-hidden="true"
+        />
       )}
     </>
   );

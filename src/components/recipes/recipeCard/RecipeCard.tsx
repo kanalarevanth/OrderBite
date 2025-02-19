@@ -1,68 +1,88 @@
-import React, { useState } from "react";
-
-interface Recipe {
-  id: number;
-  name: string;
-  ingredients: string[];
-  instructions: string[];
-  prepTimeMinutes: number;
-  cookTimeMinutes: number;
-  servings: number;
-  difficulty: string;
-  cuisine: string;
-  caloriesPerServing: number;
-  tags: string[];
-  userId: number;
-  image: string;
-  rating: number;
-  reviewCount: number;
-  mealType: string[];
-}
+import React from "react";
+import { useDispatch } from "react-redux";
+import { addRecipe, updateRecipeQuantity } from "../../../store/cartSlice";
+import { Recipe } from "../../../types/type";
+import { useNavigate } from "react-router-dom";
+import "./RecipeCard.css";
 
 interface RecipeCardProps {
   recipe: Recipe;
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
-  const [quantity, setQuantity] = useState<number>(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleIncrease = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+  const handleIncrease = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(addRecipe({ ...recipe, quantity: (recipe.quantity || 0) + 1 }));
   };
 
-  const handleDecrease = () => {
-    if (quantity > 0) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
+  const handleDecrease = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (recipe.quantity && recipe.quantity > 0) {
+      dispatch(
+        updateRecipeQuantity({
+          id: recipe.id,
+          quantity: recipe.quantity - 1,
+        })
+      );
     }
   };
 
-  return (
-    <div className="col-md-4 col-sm-6 mb-4">
-      <div className="card recipe-card shadow-sm">
-        <img src={recipe.image} className="card-img-top" alt={recipe.name} />
-        <div className="card-body d-flex flex-column justify-content-between">
-          <h6 className="card-title text-left">{recipe.name}</h6>
-          <p className="card-text small">
-            <strong>Cuisine:</strong> {recipe.cuisine} <br />
-          </p>
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(addRecipe({ ...recipe, quantity: 1 }));
+  };
 
-          <div className="d-flex flex-column justify-content-center align-items-center mt-auto">
-            <div className="quantity-container d-flex align-items-center">
+  const handleCardClick = () => {
+    navigate(`/recipe/${recipe.id}`);
+  };
+
+  return (
+    <div className="recipe-card-container">
+      <div className="recipe-card shadow-sm">
+        <img
+          src={recipe.image}
+          className="recipe-card-img-top"
+          alt={recipe.name}
+          onClick={handleCardClick}
+        />
+        <div className="recipe-card-body">
+          <h6 className="recipe-card-title" onClick={handleCardClick}>
+            {recipe.name}
+          </h6>
+          <p className="recipe-card-text small">
+            <strong>Cuisine:</strong> {recipe.cuisine}
+          </p>
+          <div className="recipe-card-bottom-content">
+            {recipe.quantity ? (
+              <div className="recipe-card-quantity-container">
+                <button
+                  onClick={handleDecrease}
+                  disabled={recipe.quantity <= 0}
+                >
+                  -
+                </button>
+                <span className="recipe-card-quantity-display">
+                  {recipe.quantity}
+                </span>
+                <button onClick={handleIncrease}>+</button>
+              </div>
+            ) : (
               <button
-                className="btn btn-outline-primary mx-2"
-                onClick={handleDecrease}
-                disabled={quantity === 0}
+                className="recipe-card-btn-add-to-cart"
+                onClick={handleAddToCart}
               >
-                -
+                <i className="material-icons-round">shopping_cart</i> Add
               </button>
-              <span className="quantity-display">{quantity}</span>
-              <button
-                className="btn btn-outline-primary mx-2"
-                onClick={handleIncrease}
-              >
-                +
-              </button>
-            </div>
+            )}
+          </div>
+        </div>
+        <div className="recipe-card-rating">
+          <div className="rating-box">
+            <span className="material-icons-round rating-star">star</span>{" "}
+            <span className="rating-text">{recipe.rating}</span>
           </div>
         </div>
       </div>

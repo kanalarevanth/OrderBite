@@ -5,19 +5,17 @@ import {
   useState,
   ReactNode,
 } from "react";
-
-interface User {
-  id?: string;
-  username?: string;
-  email?: string;
-}
+import { localKeys } from "../utils/local-storage";
+import { User } from "../types/type";
 
 interface AuthContextType {
   user: User;
-  logOut: () => void;
+  setUser: (user: User) => void;
+  setToken: (token: string) => void;
+  token: string;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthContextProviderProps {
   children: ReactNode;
@@ -25,27 +23,30 @@ interface AuthContextProviderProps {
 
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<User>({});
-
-  const logOut = () => {
-    localStorage.removeItem("user");
-    setUser({});
-  };
+  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
-    const currentUserData = localStorage.getItem("user");
+    const currentUserData = localStorage.getItem(localKeys.user);
     if (currentUserData) {
       setUser(JSON.parse(currentUserData));
-      console.log("User logged in:", currentUserData);
+    }
+    const tokenData = localStorage.getItem(localKeys.token);
+    if (tokenData) {
+      setToken(tokenData);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ logOut, user }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextType | null => {
-  return useContext(AuthContext);
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthContextProvider");
+  }
+  return context;
 };
